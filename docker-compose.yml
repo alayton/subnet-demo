@@ -4,89 +4,60 @@
 
 version: '3.1'
 services:
-    apache:
-        build: .docker/apache
-        container_name: sf4_apache
-        ports:
-          - 82:80
-        volumes:
-          - .docker/config/vhosts:/etc/apache2/sites-enabled
-          - ${SYMFONY_APP}:/home/wwwroot/sf4
-        depends_on:
-          - php
-        
-          
+  apache:
+    build: .docker/apache
+    container_name: sf4_apache
+    ports:
+      - "82:80"
+    volumes:
+      - .docker/config/vhosts/sf4.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf
+      - ${SYMFONY_APP}:/usr/local/apache2/htdocs
+    depends_on:
+      - php
 
-    mysql:
-        image: mysql:5.7
-        container_name: sf4_mysql
-        volumes:
-            - .docker/data/db:/var/lib/mysql
-        ports:
-          - 3306:3306
-        environment:
-            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-            MYSQL_DATABASE: ${MYSQL_DATABASE}
-            MYSQL_USER: ${MYSQL_USER}
-            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-        
-          
+  mysql:
+    image: mysql:5.7
+    container_name: sf4_mysql
+    volumes:
+      - mysqldata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
-    php:
-        build: .docker/php
-        container_name: sf4_php
-        volumes:
-          - ${SYMFONY_APP}:/home/wwwroot/sf4
-        environment:
-          - maildev_host=sf4_maildev
-        depends_on:
-          - maildev
-          - mysql
-        
-          
+  php:
+    build: .docker/php
+    container_name: sf4_php
+    volumes:
+      - ${SYMFONY_APP}:/usr/local/apache2/htdocs
+    depends_on:
+      - mysql
 
-    phpmyadmin:
-        image: phpmyadmin/phpmyadmin
-        container_name: sf4_phpmyadmin
-        restart: always
-        ports:
-            - 8080:80
-        links:
-            - mysql
-        environment:
-          PMA_HOST: mysql
-        
-          
+  nginx:
+    container_name: angular_nginx
+    build: .docker/nginx
+    volumes:
+      - ${ANGULAR_APP}/dist/angular:/usr/share/nginx/html
+    ports:
+      - "81:80"
+      - "443:443"
 
-    maildev:
-        image: djfarrelly/maildev
-        container_name: sf4_maildev
-        ports:
-          - 8001:80
-        
-          
+  node:
+    build: .docker/node
+    container_name: angular_node
+    ports:
+      - "4200:4200"
+    volumes:
+      - ${ANGULAR_APP}:/home/node/app/frontend
+    tty: true
+    command:
+      - /bin/sh
+      - -c
+      - |
+        cd /home/node/app/frontend && npm start
 
-    nginx:
-      container_name: angular_nginx
-      build: .docker/nginx
-      volumes:
-        - ${ANGULAR_APP}/dist/Angular-project:/usr/share/nginx/html
-      ports:
-        - "81:80"
-        - "443:443"
-      
-    node:
-        build: .docker/node
-        container_name: angular_node
-        ports:
-            - 4200:4200
-        volumes:
-            - ${ANGULAR_APP}:/home/node/app/frontend
-        tty: true
-        command:
-            - /bin/sh
-            - -c
-            - |
-                cd /home/node/app/frontend && npm start
-        expose:
-            - "4200"
+volumes:
+  mysqldata:

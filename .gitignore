@@ -1,3 +1,6 @@
 ###> docker ###
 .docker/data/*
 ###< docker ###
+
+angular-old
+symfony-old
