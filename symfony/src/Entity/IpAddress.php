@@ -27,6 +27,12 @@ class IpAddress
      */
     private $addressTag;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Subnet::class, inversedBy="ipAddresses")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $subnet;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +58,18 @@ class IpAddress
     public function setAddressTag(string $addressTag): self
     {
         $this->addressTag = $addressTag;
+
+        return $this;
+    }
+
+    public function getSubnet(): ?Subnet
+    {
+        return $this->subnet;
+    }
+
+    public function setSubnet(?Subnet $subnet): self
+    {
+        $this->subnet = $subnet;
 
         return $this;
     }
