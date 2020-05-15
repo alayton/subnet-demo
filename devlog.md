@@ -31,3 +31,19 @@ All that was left, already, was just the controller. When I was last working wit
 `FOSRestBundle` seems like the go-to solution for REST API's, but it doesn't support Symfony 5 yet, so that wasn't an option. `JMSSerializer` was referenced alongside it repeatedly, and seems to work fine. After adding that in and implementing it, the backend was done, even faster than I expected. With the extra time, I got started on writing this.
 
 ## Day 3
+
+This is the part that I expected to be the most challenging, and I wasn't wrong. Angular uses a lot of conventions that are radically different from React, and some of the syntax is just completely foreign. That said, I've always learned by diving in and finding answers as I go, and that's what I did this time as well. Typically, that means working from existing code and adopting practices from that. In this case, I'm not working with an existing codebase, so the introductory Angular tutorial (among others that I found for specific problems) served that purpose.
+
+The result is, I suspect, a very basic app structure that probably wouldn't scale very well. That's definitely something that was on my mind throughout the day: how should I be approaching this? Writing the app to simply meet the requirements, or spending time on a more robust structure to try to show more mastery?
+
+I've obviously chosen the former, in part because I don't have much mastery to show in this area, but also because I'm a firm believer in not overengineering a solution. In order to plan for a more robust application, some idea of what it could be down the road is needed - that's definitely not something I have here, so I feel pretty okay about this choice.
+
+While Angular is very different from React, I've found that I quite like the tooling around it. One of the big headaches in starting a React project is getting a good build pipeline put together, and all of that is just baked into Angular's CLI for free. I love it.
+
+I've kind of gone off on a couple tangents today, but that kind of says something about how the work went. There wasn't anything that came up as a serious roadblock, and once I started getting a grasp of how Angular works, the parts just sort of fell into place. There are parts that I'm not certain about (namely, the massaging of the endpoint response in the subnet service), but I don't feel bad about them either.
+
+## Final Thoughts
+
+I'm happy with how much I've learned through this challenge, particularly with Docker and Angular. I'm concerned with my interpretation of the challenge though, because it seems like something that could be easily done in under a day by someone with recent Symfony and Angular experience. Maybe the week timeline is intended for people only spending a couple hours in the evenings?
+
+I knew I would probably enjoy Angular once I gave it a chance - the same friends that originally sold me on Go have been using it for years now. I'm a bit relieved that working with PHP is better than I remembered. It's probably unfair to base my opinion of it on the When I Work codebase. That monstrosity is Symfony in the same repository as Kohana, built on questionable 10 year old code.

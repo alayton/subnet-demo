@@ -35,6 +35,7 @@ services:
       - ${SYMFONY_APP}:/usr/local/apache2/htdocs
     depends_on:
       - mysql
+    command: sh -c "composer install && bin/console --no-interaction doctrine:migrations:migrate && exec php-fpm"
 
   nginx:
     container_name: angular_nginx
@@ -53,11 +54,7 @@ services:
     volumes:
       - ${ANGULAR_APP}:/home/node/app/frontend
     tty: true
-    command:
-      - /bin/sh
-      - -c
-      - |
-        cd /home/node/app/frontend && npm start
+    command: sh -c "cd /home/node/app/frontend && echo n | npm install && npm start"
 
 volumes:
   mysqldata:

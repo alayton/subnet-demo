@@ -1,0 +1,19 @@
+<div *ngFor="let item of subnets; trackBy: trackByFn" class="mb-3">
+    <button type="button" (click)="isExpanded[item.id] = !isExpanded[item.id]">
+        <div class="toggle-box">
+            <ng-container *ngIf="isExpanded[item.id]; else elseBlock">-</ng-container>
+            <ng-template #elseBlock>+</ng-template>
+        </div>
+        {{ item.subnet }}/{{ item.cidr }}
+    </button>
+
+    <ul [ngbCollapse]="!isExpanded[item.id]">
+        <li
+            *ngFor="let ip of item.ip_addresses; trackBy: trackByFn"
+            [ngClass]="{'font-weight-bold': selectedIp && selectedIp.id === ip.id}"
+            (click)="clickIp(ip)"
+        >
+            {{ ip.ip }}
+        </li>
+    </ul>
+</div>

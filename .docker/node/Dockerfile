@@ -1,5 +1,7 @@
 FROM node:12-alpine
 
+RUN apk add --no-cache bash
+
 USER node
 
 RUN mkdir /home/node/.npm-global
@@ -12,7 +14,7 @@ WORKDIR $HOME/app
 
 RUN npm i -g npm
 
-RUN npm install -g @angular/cli && npm cache clean --force
+RUN echo n | npm install -g --silent @angular/cli && npm cache clean --force
 
 EXPOSE 4200
 
